@@ -1,0 +1,7 @@
+suite_namespace: api\tests\functional
+actor: FunctionalTester
+modules:
+    enabled:
+        - Yii2
+        - Asserts
+        - \api\tests\_support\Helper\ApiHelper

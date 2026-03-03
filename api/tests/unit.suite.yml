@@ -1,0 +1,8 @@
+suite_namespace: api\tests\unit
+actor: UnitTester
+bootstrap: _bootstrap.php
+modules:
+    enabled:
+        - Yii2:
+            configFile: 'config/codeception-local.php'
+            part: [orm, fixtures]

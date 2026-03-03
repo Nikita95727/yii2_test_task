@@ -1,0 +1,26 @@
+# dependencies
+/vendor/
+
+# environment
+.env
+
+# runtime
+/api/runtime/
+/backend/runtime/
+/console/runtime/
+/frontend/runtime/
+
+# assets
+/api/web/assets/
+/backend/web/assets/
+/frontend/web/assets/
+
+# ide
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# tests
+**/tests/_output/
+/common/config/codeception-local.php
