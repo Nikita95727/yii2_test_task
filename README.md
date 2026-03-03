@@ -67,9 +67,17 @@ php yii seed/all
 
 Or individually: `yii seed/users`, `yii seed/albums`, `yii seed/photos`.
 
-**Token**: after `yii seed/users` or `yii seed/all`, a Bearer token for user #1 is printed to the console. Copy it for API testing.
+Note: `yii seed/users` or `yii seed/all` also prints a token for user #1. To generate tokens on demand, use the command below.
 
-### 6. Run API
+### 6. Generate Bearer Token
+
+```bash
+php yii token/generate 1
+```
+
+Outputs a Bearer token for user #1. Use any user ID that exists. Copy the token for API requests (`Authorization: Bearer <token>`).
+
+### 7. Run API
 
 ```bash
 php -S localhost:8080 -t api/web api/web/router.php
@@ -204,7 +212,7 @@ PhotoGetUrlTest: Test get url field exists ......... Ok
 - **Routing**: `/users`, `/albums` and `/v1/users`, `/v1/albums` — both variants supported
 - **Auth**: HttpBearerAuth in controller behaviors (BaseApiController), `/health` is public
 - **FK**: CASCADE for album→user and photo→album
-- **Tokens**: `user_token` with `token_hash` (SHA-256), plaintext only at creation
+- **Tokens**: `user_token` with `token_hash` (SHA-256), plaintext only at creation; `yii token/generate <id>` to issue
 - **Seed**: DEMO_USER_PASSWORD set in `.env`, not in repository
 - **N+1**: eager loading via `with()` in services
 - **Errors**: JSON format via JsonErrorHandler
