@@ -26,7 +26,15 @@ Production-grade REST API on Yii2 Advanced: users, albums, photos. Bearer Token 
 composer install
 ```
 
-### 2. ENV Config
+### 2. Init
+
+```bash
+php init --env=Development --overwrite=n
+```
+
+Creates local config files from `environments/dev/`.
+
+### 3. ENV Config
 
 ```bash
 cp .env.example .env
@@ -43,23 +51,25 @@ Fill in `.env` (file is not committed):
 | `DEMO_USER_PASSWORD` | Password for seed (required, set locally) | — |
 | `APP_BASE_URL` | Base URL for API (optional) | `http://localhost:8080` |
 
-### 3. MySQL
+### 4. MySQL (without Docker)
 
-```bash
-# Docker
-docker compose up -d mysql
+Create database locally:
 
-# Or create DB manually:
-# CREATE DATABASE yii2api CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```sql
+CREATE DATABASE yii2api CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-### 4. Migrations
+For tests: `CREATE DATABASE yii2api_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`
+
+Optional: `docker compose up -d mysql` (uses yii2api/secret — set `DB_USER=yii2api`, `DB_PASSWORD=secret` in .env).
+
+### 5. Migrations
 
 ```bash
 php yii migrate --interactive=0
 ```
 
-### 5. Seed
+### 6. Seed
 
 ```bash
 php yii seed/all
@@ -69,7 +79,7 @@ Or individually: `yii seed/users`, `yii seed/albums`, `yii seed/photos`.
 
 Note: `yii seed/users` or `yii seed/all` also prints a token for user #1. To generate tokens on demand, use the command below.
 
-### 6. Generate Bearer Token
+### 7. Generate Bearer Token
 
 ```bash
 php yii token/generate 1
@@ -77,7 +87,7 @@ php yii token/generate 1
 
 Outputs a Bearer token for user #1. Use any user ID that exists. Copy the token for API requests (`Authorization: Bearer <token>`).
 
-### 7. Run API
+### 8. Run API
 
 ```bash
 php -S localhost:8080 -t api/web api/web/router.php
@@ -173,11 +183,18 @@ curl -s -w "\nHTTP: %{http_code}" -H "Authorization: Bearer YOUR_TOKEN" http://l
 ## Tests
 
 ```bash
-# 1. Migrations and seed (for test data)
+# 1. Create test DB (without Docker)
+mysql -uroot -e "CREATE DATABASE yii2api_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+# 2. Migrations and seed for main DB
 php yii migrate --interactive=0
 php yii seed/all
 
-# 2. Run
+# 3. Migrations and seed for test DB
+php yii_test migrate --interactive=0
+php yii_test seed/all
+
+# 4. Run
 vendor/bin/codecept run -c api
 ```
 
