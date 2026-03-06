@@ -289,6 +289,7 @@ vendor/bin/codecept run -c api
 
 | Issue | Solution |
 |-------|----------|
+| `SQLSTATE[HY000] [2002] No such file or directory` | App was connecting via Unix socket (localhost). Fixed: entrypoint now writes `.env` with `host=mysql` for Docker. Run `docker compose down`, `docker compose up -d --build` |
 | 502 Bad Gateway | Wait 15–30 sec after `up` — the app container runs migrations and seeders |
 | Port 8088 in use | Change in `docker-compose.yml`: `ports: "8089:80"` |
 | DB connection error | Ensure MySQL is healthy: `docker compose ps` |
